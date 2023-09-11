@@ -3,7 +3,7 @@ config()
 const cors = require('cors');
 const express = require('express');
 const app = express();
-const PORT = 9000;
+const PORT = process.env.PORT;
 const { getDateFromDB, getMessages, createMessage } = require("./dbutils");
 
 app.listen(PORT, () => {
@@ -54,7 +54,7 @@ app.post('/messages', async (req, res) => {
         }
 
         const result = await createMessage(message)
-        if (result.rowCount === 0) {
+        if (!result.rowCount) {
             res.status(500).json({ error: 'No se pudo crear el mensaje'})
             return
         }
